@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>مساحة العمل | Work Space</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Cairo', sans-serif;
+        }
+        body {
+            background-color: #0b1120;
+            color: #f8fafc;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        .navbar {
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .nav-brand h2 {
+            margin: 0;
+            font-size: 1.3rem;
+            color: #38bdf8;
+        }
+        .nav-links a {
+            color: #94a3b8;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.2s;
+        }
+        .nav-links a:hover {
+            color: #f8fafc;
+        }
+        .workspace-container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+        .workspace-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+            background: #1e293b;
+            padding: 20px 24px;
+            border-radius: 16px;
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .title-area {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        .task-badge {
+            background: rgba(56, 189, 248, 0.15);
+            color: #38bdf8;
+            border: 1px solid rgba(56, 189, 248, 0.4);
+            padding: 6px 16px;
+            border-radius: 10px;
+            font-family: monospace;
+            font-size: 1.2rem;
+            font-weight: 800;
+        }
+        .back-btn {
+            background: #334155;
+            color: #f8fafc;
+            text-decoration: none;
+            padding: 8px 18px;
+            border-radius: 8px;
+            font-weight: 700;
+            transition: background 0.2s;
+        }
+        .back-btn:hover {
+            background: #475569;
+        }
+        .details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        .info-card {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 16px 20px;
+        }
+        .info-card label {
+            display: block;
+            color: #94a3b8;
+            font-size: 0.85rem;
+            margin-bottom: 6px;
+        }
+        .info-card div {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: #f8fafc;
+        }
+        .main-card {
+            background: #1e293b;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 28px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+        .desc-title {
+            color: #38bdf8;
+            font-size: 1.1rem;
+            margin-top: 0;
+            margin-bottom: 12px;
+        }
+        .desc-body {
+            color: #cbd5e1;
+            line-height: 1.7;
+            font-size: 1.05rem;
+            white-space: pre-wrap;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            font-weight: 700;
+        }
+        .status-pending { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
+        .status-current { background: rgba(56, 189, 248, 0.2); color: #38bdf8; }
+        .status-completed { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .status-late { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-brand">
+            <span>🚀</span>
+            <h2>Task Board</h2>
+        </div>
+        <div class="nav-links">
+            <a href="index.html">🏠 القائمة الرئيسية</a>
+        </div>
+    </nav>
+
+    <div class="workspace-container">
+        <!-- Header -->
+        <div class="workspace-header">
+            <div class="title-area">
+                <span id="ui-task-id" class="task-badge">#...</span>
+                <h1 id="ui-task-title" style="margin:0; font-size: 1.5rem;">جاري تحميل البيانات...</h1>
+            </div>
+            <a href="index.html" class="back-btn">⬅️ العودة للرئيسية</a>
+        </div>
+
+        <!-- Metadata Grid -->
+        <div class="details-grid">
+            <div class="info-card">
+                <label>👤 المسؤول عن التاسك</label>
+                <div id="ui-task-assignee">--</div>
+            </div>
+            <div class="info-card">
+                <label>🔥 الأولوية</label>
+                <div id="ui-task-priority">--</div>
+            </div>
+            <div class="info-card">
+                <label>📅 تاريخ التسليم</label>
+                <div id="ui-task-date">--</div>
+            </div>
+            <div class="info-card">
+                <label>📌 الحالة الحالية</label>
+                <div id="ui-task-status">--</div>
+            </div>
+        </div>
+
+        <!-- Task Description -->
+        <div class="main-card">
+            <h3 class="desc-title">📋 تفاصيل ووصف المهمة المطلوبة:</h3>
+            <div id="ui-task-desc" class="desc-body">جاري جلب تفاصيل التاسك من البيانات...</div>
+        </div>
+    </div>
+
+    <script>
+        // الرابط الخاص بـ Google Apps Script Web App
+        const GOOGLE_SHEET_API = "https://script.google.com/macros/s/AKfycbwYQmdYv3TnxkYR3Dtbs--cTFVn4Vee1KeFHFEvOC9mdP9rXL_H9S4P4unUZK_i3DWE/exec";
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            // 1. جلب الـ ID من رابط الصفحة (e.g. workspace.html?id=GBC-101)
+            const urlParams = new URLSearchParams(window.location.search);
+            const targetId = urlParams.get('id');
+
+            if (!targetId) {
+                document.getElementById('ui-task-title').innerText = "لم يتم تحديد ID في الرابط!";
+                document.getElementById('ui-task-desc').innerText = "يرجى اختيار تاسك من الصفحة الرئيسية للدخول إلى مساحة العمل الخاصة به.";
+                return;
+            }
+
+            // عرض الـ ID فوراً في الهيدر
+            document.getElementById('ui-task-id').innerText = `#${targetId}`;
+
+            try {
+                // 2. جلب كافة التاسكات من الـ API
+                const response = await fetch(GOOGLE_SHEET_API);
+                const tasks = await response.json();
+
+                if (!Array.isArray(tasks)) {
+                    console.error("البيانات القادمة ليست مصفوفة صحيحية", tasks);
+                    return;
+                }
+
+                // 3. البحث عن التاسك المطلوبة بمرونة عالية مع مقارنة الـ ID
+                const task = tasks.find(t => {
+                    const id = (t.task_id || t.id || t['Task ID'] || t['الرقم التعريفى'] || '').toString().toLowerCase().trim();
+                    const target = targetId.toString().toLowerCase().trim();
+                    return id === target || id === target.replace('gbc-', '');
+                });
+
+                if (task) {
+                    // استخراج البيانات بغض النظر عن اسم العمود (عربي أو إنجليزي)
+                    const title = task.title || task.Title || task['عنوان التاسك'] || task['العنوان'] || 'بدون عنوان';
+                    const desc = task.description || task.Description || task.details || task['تفاصيل التاسك'] || task['الوصف'] || 'لا يوجد وصف تفصيلي لهذا التاسك.';
+                    const assignee = task.assignee || task.Assignee || task['المسؤول'] || task['المسؤول عن التاسك'] || 'غير محدد';
+                    const priority = task.priority || task.Priority || task['الأولوية'] || 'Medium';
+                    const dueDate = task.due_date || task.dueDate || task.due_date || task['تاريخ التسليم'] || task['تاريخ البداية'] || '--/--/----';
+                    const status = (task.status || task.Status || task['الحالة'] || 'Pending').toString();
+
+                    // 4. تحديث عناصر الواجهة بالبيانات الصحيحة
+                    document.getElementById('ui-task-title').innerText = title;
+                    document.getElementById('ui-task-desc').innerText = desc;
+                    document.getElementById('ui-task-assignee').innerText = assignee;
+                    document.getElementById('ui-task-priority').innerText = priority;
+                    document.getElementById('ui-task-date').innerText = dueDate;
+
+                    // تنسيق شارة الحالة (Status Badge)
+                    const statusEl = document.getElementById('ui-task-status');
+                    statusEl.innerText = status;
+                    statusEl.className = 'status-badge';
+
+                    const sLower = status.toLowerCase();
+                    if (sLower.includes('pending') || sLower.includes('معلقة')) {
+                        statusEl.classList.add('status-pending');
+                    } else if (sLower.includes('current') || sLower.includes('progress') || sLower.includes('قيد')) {
+                        statusEl.classList.add('status-current');
+                    } else if (sLower.includes('completed') || sLower.includes('مكتمل')) {
+                        statusEl.classList.add('status-completed');
+                    } else if (sLower.includes('late') || sLower.includes('متأخر')) {
+                        statusEl.classList.add('status-late');
+                    }
+
+                } else {
+                    document.getElementById('ui-task-title').innerText = "التاسك غير موجود!";
+                    document.getElementById('ui-task-desc').innerText = `تعذر العثور على تاسك برقم #${targetId} داخل الشيت. تأكد من الرقم أو اضف التاسك من جديد.`;
+                }
+
+            } catch (error) {
+                console.error("حدث خطأ أثناء جلب البيانات:", error);
+                document.getElementById('ui-task-title').innerText = "خطأ في الاتصال بالـ API";
+                document.getElementById('ui-task-desc').innerText = "تعذر الاتصال بـ Google Sheets API. تأكد من وضع الرابط الصحيح في متغير GOOGLE_SHEET_API وأن خيار Deploy مضبوط على Anyone.";
+            }
+        });
+    </script>
+</body>
+</html>

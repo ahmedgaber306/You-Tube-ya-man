@@ -640,3 +640,32 @@ body {
     100% { transform: scale(1); opacity: 1; }
 }
 
+
+
+/* تنسيق الزر العائم */
+.floating-dashboard-btn {
+    position: fixed;
+    bottom: 20px; /* المسافة من أسفل الشاشة */
+    right: 20px;  /* المسافة من يمين الشاشة (يمكنك تغييرها إلى left إذا أردت) */
+    background-color: #007bff; /* لون خلفية الزر */
+    color: #ffffff; /* لون النص والأيقونة */
+    display: flex;
+    align-items: center;
+    gap: 8px; /* المسافة بين الأيقونة والنص */
+    padding: 12px 18px;
+    border-radius: 50px; /* حواف دائرية بالكامل */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); /* ظل للزر ليظهر عائماً */
+    text-decoration: none; /* إزالة الخط أسفل الرابط */
+    font-family: sans-serif;
+    font-weight: bold;
+    z-index: 9999; /* لضمان ظهور الزر فوق جميع عناصر الصفحة */
+    transition: transform 0.2s ease, background-color 0.2s ease;
+}
+
+/* تأثير عند تمرير الماوس فوق الزر */
+.floating-dashboard-btn:hover {
+    background-color: #0056b3; /* تغيير اللون لدرجة أغمق */
+    transform: scale(1.05); /* تكبير بسيط للزر */
+}
+
+

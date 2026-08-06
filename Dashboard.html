@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>لوحة المتابعة الإبداعية 🚀</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #0b1120;
+      --card-bg: #1e293b;
+      --card-hover: #334155;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --accent: #38bdf8;
+      --accent-soft: rgba(56, 189, 248, 0.1);
+      --danger-soft: rgba(244, 63, 94, 0.12);
+      --success: #10b981;
+      --success-soft: rgba(16, 185, 129, 0.12);
+      --warning: #facc15;
+      --border: #334155;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Cairo', sans-serif; }
+    body { background-color: var(--bg-color); color: var(--text-main); padding: 2rem 1rem; line-height: 1.6; }
+    .container { max-width: 1000px; margin: 0 auto; }
+
+    header { text-align: center; margin-bottom: 2.5rem; }
+    header h1 {
+      font-size: 2.2rem; font-weight: 800;
+      background: linear-gradient(135deg, #38bdf8, #a855f7);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+
+    /* 1. قسم إضافة فكرة */
+    .idea-card {
+      background: linear-gradient(145deg, #1e293b, #0f172a);
+      border: 1px solid var(--border); border-radius: 20px;
+      padding: 1.5rem; margin-bottom: 2.5rem; box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+    }
+    .idea-card h2 { font-size: 1.3rem; color: var(--warning); margin-bottom: 1rem; }
+    .idea-form { display: flex; flex-direction: column; gap: 1rem; }
+    .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+    .form-group label { font-size: 0.85rem; color: var(--text-muted); }
+    .form-group input, .form-group textarea {
+      background-color: rgba(15, 23, 42, 0.8); border: 1px solid var(--border);
+      color: var(--text-main); padding: 0.75rem 1rem; border-radius: 12px; font-size: 0.95rem; outline: none;
+    }
+    .btn-submit {
+      background: linear-gradient(135deg, #38bdf8, #0284c7); color: #0f172a; font-weight: 700;
+      padding: 0.75rem 1.8rem; border: none; border-radius: 12px; cursor: pointer; font-size: 1rem;
+      align-self: flex-start; transition: all 0.2s;
+    }
+    .btn-submit:hover { transform: translateY(-2px); }
+
+    .thank-you-msg {
+      display: none; background: rgba(16, 185, 129, 0.15); border: 1px solid var(--success);
+      color: #6ee7b7; padding: 1rem 1.2rem; border-radius: 12px; margin-top: 1rem; font-weight: 600;
+    }
+
+    /* 2. الأقسام الأربعة (الأكورديون) */
+    .accordion-container { display: flex; flex-direction: column; gap: 1.2rem; margin-bottom: 3rem; }
+    .accordion-item { background-color: var(--card-bg); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; }
+    .accordion-header { padding: 1.2rem 1.5rem; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
+    .accordion-header:hover { background-color: var(--card-hover); }
+    .accordion-title { display: flex; align-items: center; gap: 0.8rem; font-size: 1.15rem; font-weight: 700; }
+    .badge-count { background-color: var(--accent-soft); color: var(--accent); padding: 0.2rem 0.6rem; border-radius: 20px; font-size: 0.8rem; }
+    .arrow { font-size: 1rem; color: var(--text-muted); transition: transform 0.3s; }
+    .accordion-item.active .arrow { transform: rotate(180deg); color: var(--accent); }
+    
+    .accordion-content {
+      max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out, padding 0.3s ease;
+      background-color: rgba(15, 23, 42, 0.4);
+    }
+    .accordion-item.active .accordion-content { max-height: 1000px; padding: 1.2rem; border-top: 1px solid var(--border); }
+
+    .custom-table { width: 100%; border-collapse: separate; border-spacing: 0 0.5rem; text-align: right; }
+    .custom-table th { color: var(--text-muted); font-size: 0.85rem; padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); }
+    .custom-table td { padding: 0.9rem 1rem; background-color: var(--card-bg); font-size: 0.9rem; }
+    .custom-table td:first-child { border-top-right-radius: 10px; border-bottom-right-radius: 10px; }
+    .custom-table td:last-child { border-top-left-radius: 10px; border-bottom-left-radius: 10px; }
+
+    .status-tag { display: inline-flex; align-items: center; padding: 0.3rem 0.8rem; border-radius: 30px; font-size: 0.8rem; font-weight: 700; }
+    .status-tag.on-time { background-color: var(--success-soft); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .status-tag.delayed { background-color: var(--danger-soft); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+    .status-tag.done { background-color: rgba(168, 85, 247, 0.15); color: #c084fc; border: 1px solid rgba(168, 85, 247, 0.3); }
+
+    /* 3. 🔥 الجزء الجديد: عرض بنك الأفكار في الأسفل */
+    .ideas-bank-section {
+      background-color: rgba(30, 41, 59, 0.5);
+      border: 1px dashed var(--border);
+      border-radius: 20px;
+      padding: 1.8rem;
+    }
+
+    .ideas-bank-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .ideas-bank-header h2 {
+      font-size: 1.3rem;
+      color: var(--warning);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .ideas-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .idea-display-card {
+      background-color: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      transition: transform 0.2s;
+    }
+
+    .idea-display-card:hover {
+      transform: translateY(-3px);
+      border-color: var(--accent);
+    }
+
+    .idea-display-title {
+      font-weight: 700;
+      font-size: 1rem;
+      color: var(--text-main);
+    }
+
+    .idea-display-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      flex-grow: 1;
+    }
+
+    .idea-display-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .loading-text { text-align: center; color: var(--text-muted); padding: 1rem; }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>✨ لوحة المتابعة الإبداعية</h1>
+      <p>مربوطة مباشرة مع Google Sheets بأعلى كفاءة</p>
+    </header>
+
+    <!-- 1. نموذج إضافة فكرة -->
+    <section class="idea-card">
+      <h2>💡 إضافة فكرة جديدة</h2>
+      <form id="ideaForm" class="idea-form" onsubmit="handleIdeaSubmit(event)">
+        <div class="form-group">
+          <label for="ideaTitle">عنوان الفكرة</label>
+          <input type="text" id="ideaTitle" placeholder="اكتب عنوان الفكرة..." required>
+        </div>
+        <div class="form-group">
+          <label for="ideaDesc">وصف الفكرة</label>
+          <textarea id="ideaDesc" rows="2" placeholder="اشرح الفكرة بالتفصيل..." required></textarea>
+        </div>
+        <button type="submit" id="submitBtn" class="btn-submit">إضافة الفكرة 🚀</button>
+      </form>
+      <div id="thankYouMsg" class="thank-you-msg">
+        متشكرين يا صاحبي على افكارك الرائعه دي اكيد هيكون ليها تاثير كبير! 🎉✨
+      </div>
+    </section>
+
+    <!-- 2. الأقسام الأربعة للمهام -->
+    <div class="accordion-container">
+      <!-- Writer -->
+      <div class="accordion-item" onclick="toggleAccordion(this)">
+        <div class="accordion-header">
+          <div class="accordion-title"><span>✍️</span><span>The Writer Tasks</span><span class="badge-count" id="count-writer">0</span></div>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="accordion-content" onclick="event.stopPropagation()">
+          <table class="custom-table">
+            <thead><tr><th>المهمة</th><th>التفاصيل</th><th>البدء ⏰</th><th>المتوقع 🎯</th><th>الحالة</th></tr></thead>
+            <tbody id="table-writer"><tr><td colspan="5" class="loading-text">جاري التحميل...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Coder -->
+      <div class="accordion-item" onclick="toggleAccordion(this)">
+        <div class="accordion-header">
+          <div class="accordion-title"><span>💻</span><span>El-Coder Tasks</span><span class="badge-count" id="count-coder">0</span></div>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="accordion-content" onclick="event.stopPropagation()">
+          <table class="custom-table">
+            <thead><tr><th>المهمة</th><th>التفاصيل</th><th>البدء ⏰</th><th>المتوقع 🎯</th><th>الحالة</th></tr></thead>
+            <tbody id="table-coder"><tr><td colspan="5" class="loading-text">جاري التحميل...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Editor -->
+      <div class="accordion-item" onclick="toggleAccordion(this)">
+        <div class="accordion-header">
+          <div class="accordion-title"><span>🎬</span><span>The Editor Tasks</span><span class="badge-count" id="count-editor">0</span></div>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="accordion-content" onclick="event.stopPropagation()">
+          <table class="custom-table">
+            <thead><tr><th>المهمة</th><th>التفاصيل</th><th>البدء ⏰</th><th>المتوقع 🎯</th><th>الحالة</th></tr></thead>
+            <tbody id="table-editor"><tr><td colspan="5" class="loading-text">جاري التحميل...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Completed -->
+      <div class="accordion-item" onclick="toggleAccordion(this)">
+        <div class="accordion-header">
+          <div class="accordion-title"><span>🌟</span><span>The Completed Tasks</span><span class="badge-count" id="count-completed">0</span></div>
+          <span class="arrow">▼</span>
+        </div>
+        <div class="accordion-content" onclick="event.stopPropagation()">
+          <table class="custom-table">
+            <thead><tr><th>المهمة</th><th>التفاصيل</th><th>البدء ⏰</th><th>الانتهاء 🏆</th><th>الحالة</th></tr></thead>
+            <tbody id="table-completed"><tr><td colspan="5" class="loading-text">جاري التحميل...</td></tr></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- 3. 🔥 الجزء الجديد: بنك الأفكار المضافة أسفل الصفحة -->
+    <section class="ideas-bank-section">
+      <div class="ideas-bank-header">
+        <h2>💡 بنك الأفكار المقترحة</h2>
+        <span class="badge-count" id="count-ideas">0 فكرة</span>
+      </div>
+      <div class="ideas-grid" id="ideas-container">
+        <p class="loading-text">جاري تحميل الأفكار من الشيت...</p>
+      </div>
+    </section>
+
+  </div>
+
+  <script>
+    // ⚠️ ضع رابط الـ Web App الخاص بك هنا
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzPPfZFihNPiWQpEAa7zc0yUdt9t3yxHlEg-5CDWLXC1hjaIWib9eDhRwUKaU9UQ421/exec";
+
+    window.onload = function() {
+      fetchTasksData();
+    };
+
+    function toggleAccordion(element) {
+      element.classList.toggle('active');
+    }
+
+function fetchTasksData() {
+  if (!SCRIPT_URL || SCRIPT_URL.includes("ضع_رابط")) return;
+
+  fetch(SCRIPT_URL, {
+    method: 'GET',
+    redirect: 'follow' // توجيه الطلب تلقائياً لروابط جوجل الداخلية
+  })
+    .then(res => res.json())
+    .then(data => {
+      renderSection('writer', data.writer || []);
+      renderSection('coder', data.coder || []);
+      renderSection('editor', data.editor || []);
+      renderSection('completed', data.completed || [], true);
+      renderIdeasBank(data.ideas || []);
+    })
+    .catch(err => {
+      console.error("خطأ أثناء جلب البيانات:", err);
+    });
+}
+
+    function renderSection(category, tasks, isCompleted = false) {
+      const tbody = document.getElementById(`table-${category}`);
+      const countBadge = document.getElementById(`count-${category}`);
+      
+      countBadge.textContent = tasks.length;
+      tbody.innerHTML = "";
+
+      if (tasks.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color: var(--text-muted);">لا توجد مهام حالياً ✨</td></tr>`;
+        return;
+      }
+
+      const now = new Date();
+
+      tasks.forEach(task => {
+        const tr = document.createElement('tr');
+        let statusBadge = "";
+
+        if (isCompleted) {
+          statusBadge = `<span class="status-tag done">🎉 إنجاز رائع</span>`;
+        } else {
+          const isDelayed = task.status === "متأخرة" || (task.expected && new Date(task.expected) < now);
+          statusBadge = isDelayed 
+            ? `<span class="status-tag delayed">⚠️ متأخرة</span>` 
+            : `<span class="status-tag on-time">🌱 مستمرة بنجاح</span>`;
+        }
+
+        tr.innerHTML = `
+          <td><strong>${task.name || '-'}</strong></td>
+          <td style="color: var(--text-muted);">${task.desc || '-'}</td>
+          <td><small>${task.start || '-'}</small></td>
+          <td><small>${task.expected || '-'}</small></td>
+          <td>${statusBadge}</td>
+        `;
+        tbody.appendChild(tr);
+      });
+    }
+
+    // عرض الأفكار المضافة أسفل الصفحة
+    function renderIdeasBank(ideas) {
+      const container = document.getElementById('ideas-container');
+      const countBadge = document.getElementById('count-ideas');
+
+      countBadge.textContent = `${ideas.length} فكرة`;
+      container.innerHTML = "";
+
+      if (ideas.length === 0) {
+        container.innerHTML = `<p style="color: var(--text-muted); grid-column: 1/-1; text-align: center;">لا توجد أفكار مسجلة حتى الآن.. أضف أول فكرة فوق! 🚀</p>`;
+        return;
+      }
+
+      ideas.forEach(idea => {
+        const card = document.createElement('div');
+        card.className = 'idea-display-card';
+        card.innerHTML = `
+          <div class="idea-display-title">💡 ${idea.title}</div>
+          <div class="idea-display-desc">${idea.desc}</div>
+          <div class="idea-display-footer">
+            <span>📅 ${idea.time}</span>
+            <span style="color: var(--warning);">${idea.status}</span>
+          </div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    // إرسال الفكرة وتحديث العرض تلقائياً
+function handleIdeaSubmit(e) {
+  e.preventDefault();
+  const titleInput = document.getElementById('ideaTitle');
+  const descInput = document.getElementById('ideaDesc');
+  const submitBtn = document.getElementById('submitBtn');
+
+  const title = titleInput.value.trim();
+  const desc = descInput.value.trim();
+
+  if (!SCRIPT_URL || SCRIPT_URL === "ضع_رابط_WEB_APP_هنا") {
+    alert("برجاء إضافة رابط الـ Web App أولاً!");
+    return;
+  }
+
+  // 1️⃣ تحديث فوري للشاشة (Optimistic Update) دون انتظار السيرفر!
+  const newIdea = {
+    title: title,
+    desc: desc,
+    time: "الآن",
+    status: "جديدة"
+  };
+  
+  // إضافة الفكرة في أول القائمة فوراً
+  addSingleIdeaToUI(newIdea);
+
+  // 2️⃣ إظهار رسالة الشكر وتصفير المدخلات في نفس اللحظة
+  const msg = document.getElementById('thankYouMsg');
+  msg.style.display = 'block';
+  document.getElementById('ideaForm').reset();
+  setTimeout(() => { msg.style.display = 'none'; }, 4000);
+
+  // 3️⃣ إرسال البيانات للـ Sheet في الخلفية بدون تعطيل المستخدم
+  fetch(SCRIPT_URL, {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ title: title, desc: desc })
+  }).catch(err => console.error("خطأ في حفظ الفكرة بالخلفية:", err));
+}
+
+// دالة مساعدة لإضافة الفكرة فوراً في أول القائمة
+function addSingleIdeaToUI(idea) {
+  const container = document.getElementById('ideas-container');
+  const countBadge = document.getElementById('count-ideas');
+
+  // إذا كان هناك نص "لا توجد أفكار"، امسحه
+  if (container.querySelector('p')) {
+    container.innerHTML = "";
+  }
+
+  const card = document.createElement('div');
+  card.className = 'idea-display-card';
+  // تأثير بسيط عشان تحس إنها اتضافت حالا
+  card.style.border = "1px solid var(--accent)"; 
+
+  card.innerHTML = `
+    <div class="idea-display-title">💡 ${idea.title}</div>
+    <div class="idea-display-desc">${idea.desc}</div>
+    <div class="idea-display-footer">
+      <span>📅 ${idea.time}</span>
+      <span style="color: var(--warning);">${idea.status}</span>
+    </div>
+  `;
+
+  // إدراج الفكرة في أول القائمة
+  container.insertBefore(card, container.firstChild);
+
+  // تحديث العداد
+  const currentCount = parseInt(countBadge.textContent) || 0;
+  countBadge.textContent = `${currentCount + 1} فكرة`;
+}
+  </script>
+</body>
+</html>
